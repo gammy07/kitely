@@ -11,7 +11,7 @@ const state = {
 };
 
 // Get location
-navigator.geolocation.getCurrentPosition(success, error);
+/* navigator.geolocation.getCurrentPosition(success, error);
 
 function success(position) {
     state.latitude = position.coords.latitude;
@@ -37,4 +37,19 @@ async function getWeather() {
     state.windDirection = data.current.wind_direction_10m;
 
     console.log(state);
-}
+} */
+
+    console.log("Before geolocation");
+
+navigator.geolocation.getCurrentPosition(
+    (position) => {
+        console.log("SUCCESS!");
+        console.log(position);
+    },
+    (error) => {
+        console.log("FAILED!");
+        console.log(error);
+    }
+);
+
+console.log("After geolocation");
