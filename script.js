@@ -1,13 +1,40 @@
+// Get references to UI elements
 const arrow = document.getElementById("arrow");
 
-let angle = 0;
+// App state
+const state = {
+    heading: 0,
+    latitude: null,
+    longitude: null,
+    windSpeed: 0,
+    windDirection: 0
+};
 
-function rotateArrow(){
+// Get location
+navigator.geolocation.getCurrentPosition(success, error);
 
-    angle = Math.random()*360;
+function success(position) {
+    state.latitude = position.coords.latitude;
+    state.longitude = position.coords.longitude;
 
-    arrow.style.transform = `rotate(${angle}deg)`;
+    console.log(state.latitude, state.longitude);
 
+    getWeather();
 }
 
-setInterval(rotateArrow,2500);
+function error(err) {
+    console.error(err);
+}
+
+// Fetch weather
+async function getWeather() {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${state.latitude}&longitude=${state.longitude}&current=wind_speed_10m,wind_direction_10m`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    state.windSpeed = data.current.wind_speed_10m;
+    state.windDirection = data.current.wind_direction_10m;
+
+    console.log(state);
+}
