@@ -1,116 +1,233 @@
+// =====================================
+// KITELY v0.1
+// =====================================
+
 const arrow = document.getElementById("arrow");
 
-// ----------------------
-// App State
-// ----------------------
+const speedText = document.getElementById("speed");
+const directionText = document.getElementById("direction");
+const degreeText = document.getElementById("degrees");
+const locationText = document.getElementById("location");
+const statusText = document.getElementById("status");
+
+
+// =====================================
+// APP STATE
+// =====================================
 
 const state = {
-    heading: 0,
-    windDirection: 0,
-    windSpeed: 0,
+
     latitude: null,
-    longitude: null
+    longitude: null,
+
+    windSpeed: 0,
+    windDirection: 0,
+
+    heading: 0
+
 };
 
-// ----------------------
-// Smooth Arrow Animation
-// ----------------------
 
-let currentAngle = 0;
-let targetAngle = 0;
+// =====================================
+// ARROW ANIMATION
+// =====================================
 
-function shortestAngle(current, target) {
-    const diff = ((target - current + 540) % 360) - 180;
-    return current + diff;
-}
+let currentRotation = 0;
+let targetRotation = 0;
 
-function animate() {
-    currentAngle += (targetAngle - currentAngle) * 0.12;
+function normalizeAngle(angle){
 
-    arrow.style.transform = `rotate(${currentAngle}deg)`;
+    angle %= 360;
 
-    requestAnimationFrame(animate);
-}
+    if(angle < 0)
+        angle += 360;
 
-animate();
-
-// ----------------------
-// Update Arrow
-// ----------------------
-
-function updateArrow() {
-
-    const relative =
-        state.windDirection - state.heading;
-
-    targetAngle =
-        shortestAngle(currentAngle, relative);
+    return angle;
 
 }
 
-// ----------------------
-// Compass
-// ----------------------
+function shortestDifference(from,to){
 
-window.addEventListener("deviceorientation", (event) => {
+    return ((to-from+540)%360)-180;
 
-    if(event.alpha == null) return;
+}
 
-    state.heading = event.alpha;
+function animationLoop(){
+
+    let difference = shortestDifference(currentRotation,targetRotation);
+
+    currentRotation += difference * 0.12;
+
+    arrow.style.transform =
+        `rotate(${currentRotation}deg)`;
+
+    requestAnimationFrame(animationLoop);
+
+}
+
+animationLoop();
+
+
+// =====================================
+// CARDINAL DIRECTIONS
+// =====================================
+
+function degreesToCardinal(degrees){
+
+    const dirs = [
+
+        "N","NE","E","SE",
+        "S","SW","W","NW"
+
+    ];
+
+    return dirs[
+        Math.round(degrees/45)%8
+    ];
+
+}
+
+
+// =====================================
+// UPDATE UI
+// =====================================
+
+function updateUI(){
+
+    speedText.textContent =
+        Math.round(state.windSpeed);
+
+    directionText.textContent =
+        degreesToCardinal(state.windDirection);
+
+    degreeText.textContent =
+        `${Math.round(state.windDirection)}°`;
+
+    statusText.textContent =
+        "Wind found";
 
     updateArrow();
 
-});
+}
 
-// ----------------------
-// Weather
-// ----------------------
 
-async function getWeather() {
+// =====================================
+// UPDATE ARROW
+// =====================================
+
+function updateArrow(){
+
+    targetRotation =
+        normalizeAngle(
+            state.windDirection
+            -
+            state.heading
+        );
+
+}
+
+
+// =====================================
+// WEATHER
+// =====================================
+
+async function getWeather(){
 
     const url =
+
 `https://api.open-meteo.com/v1/forecast?latitude=${state.latitude}&longitude=${state.longitude}&current=wind_speed_10m,wind_direction_10m`;
 
-    const response = await fetch(url);
+    try{
 
-    const data = await response.json();
+        const response = await fetch(url);
 
-    state.windDirection =
-        data.current.wind_direction_10m;
+        const data = await response.json();
 
-    state.windSpeed =
-        data.current.wind_speed_10m;
+        state.windSpeed =
+            data.current.wind_speed_10m;
 
-    console.log("Wind:", state.windDirection);
-    console.log("Speed:", state.windSpeed);
+        state.windDirection =
+            data.current.wind_direction_10m;
 
-    updateArrow();
+        updateUI();
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+        statusText.textContent =
+            "Couldn't fetch weather";
+
+    }
 
 }
 
-// ----------------------
-// Location
-// ----------------------
+
+// =====================================
+// LOCATION
+// =====================================
 
 navigator.geolocation.getCurrentPosition(
 
 (position)=>{
 
-    state.latitude = position.coords.latitude;
-    state.longitude = position.coords.longitude;
+    state.latitude =
+        position.coords.latitude;
 
-    console.log(
-        state.latitude,
-        state.longitude
-    );
+    state.longitude =
+        position.coords.longitude;
+
+    locationText.textContent =
+        `${state.latitude.toFixed(2)}, ${state.longitude.toFixed(2)}`;
 
     getWeather();
 
 },
 
-(error)=>{
+()=>{
 
-    console.error(error);
+    statusText.textContent =
+        "Location denied";
+
+}
+
+);
+
+
+// =====================================
+// REFRESH WEATHER
+// =====================================
+
+setInterval(
+
+getWeather,
+
+1000*60*10
+
+);
+
+
+// =====================================
+// COMPASS PLACEHOLDER
+// =====================================
+//
+// This will become Capacitor later.
+//
+
+window.addEventListener(
+
+"deviceorientation",
+
+(event)=>{
+
+    if(event.alpha == null)
+        return;
+
+    state.heading = event.alpha;
+
+    updateArrow();
 
 }
 

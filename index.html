@@ -1,47 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitely</title>
 
-<title>Kitely</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-    <h1>Kitely</h1>
+    <div class="top">
 
-    <div class="arrow-container">
+        <h1>Kitely</h1>
 
-        <svg id="arrow" draggable="false" width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-             <path d="M12 20V4M12 4L6 10M12 4L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-    </div>
-
-    <div class="speed">
-
-        14
-
-        <span>km/h</span>
+        <p id="status">
+            Finding wind...
+        </p>
 
     </div>
 
-    <div class="direction">
+    <div class="compass">
 
-        Wind from NW
+        <div id="arrow" class="arrow">
+
+            <svg
+                width="180"
+                height="180"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M12 20V4M12 4L6 10M12 4L18 10"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+
+            </svg>
+
+        </div>
 
     </div>
 
-    <div class="status">
+    <div class="wind-card">
 
-        Perfect Conditions
+        <div class="speed">
+
+            <span id="speed">--</span>
+
+            <span class="unit">
+                km/h
+            </span>
+
+        </div>
+
+        <div id="direction" class="direction">
+
+            --
+
+        </div>
+
+    </div>
+
+    <div class="info">
+
+        <div class="info-item">
+
+            <div class="label">
+                Wind Direction
+            </div>
+
+            <div id="degrees">
+                --
+            </div>
+
+        </div>
+
+        <div class="info-item">
+
+            <div class="label">
+                Location
+            </div>
+
+            <div id="location">
+                Loading...
+            </div>
+
+        </div>
 
     </div>
 
