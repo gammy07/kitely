@@ -45,4 +45,5 @@ _⚠️ This App is only for Android 7.0 (Nougat) and above_
 ------
 
 _➡️ For Patch-notes see https://arnavg-blg.vercel.app/kitely !_
+
 _This project is licensed under the MIT License - see the LICENSE file for details._
