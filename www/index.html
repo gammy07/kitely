@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Kitely</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<img src="KitelyIconInsideApp.png" id="top-left-logo" class="top-left-logo" alt="Kitely Logo">
+
+<button id="refresh-btn" class="top-right-refresh" aria-label="Refresh Wind Data">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+    </svg>
+</button>
+
+<div class="container">
+    <div class="top">
+        <h3>Kitely by Arnav Gadgil</h3>
+        <p id="status">Finding wind...</p>
+        <div id="next-update" class="next-update">Next update in --m --s</div>
+    </div>
+
+    <div class="compass">
+        <button id="togglecompass" class="off">
+            <div id="arrow" class="arrow">
+                <svg width="180" height="180" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 20V4M12 4L6 10M12 4L18 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </button>
+    </div> 
+
+    <div class="wind-card">
+        <div class="speed">
+            <span id="speed">--</span>
+            <span class="unit" id="unit">km/h</span>
+        </div>
+        <div id="direction" class="direction">--</div>
+        <div id="gusts" class="gusts-label" style="display: none;">Gusts: --</div>
+    </div>
+   
+    <div class="info">
+        <div class="info-item">
+            <div class="label">Wind Direction</div>
+            <div id="degrees">--</div>
+        </div>
+        <div class="info-item">
+            <div class="label">Location</div>
+            <div id="location">Loading...</div>
+        </div>
+    </div>
+
+    <div class="forecast-section">
+        <h4>Forecast</h4>
+        <div id="forecast-container" class="forecast-scroll-row">
+            <p class="forecast-loading">Waiting for wind data...</p>
+        </div>
+    </div>
+</div>
+
+<div id="settings-drawer" class="settings-drawer">
+    <div class="settings-content">
+        <div class="settings-header">
+            <h2>Settings</h2>
+            <button id="close-settings" class="close-btn">&times;</button>
+        </div>
+        
+        <div class="settings-body">
+            <div class="setting-item">
+                <label for="unit-select">Wind Units</label>
+                <select id="unit-select">
+                    <option value="kmh">km/h</option>
+                    <option value="mph">mph</option>
+                    <option value="ms">m/s</option>
+                    <option value="kn">kn</option>
+                </select>
+            </div>
+
+            <div class="setting-item">
+                <span class="setting-label">Show Gusts</span>
+                <label class="switch">
+                    <input type="checkbox" id="gusts-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="setting-item">
+                <span class="setting-label">Show Update Times</span>
+                <label class="switch">
+                    <input type="checkbox" id="update-time-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="setting-item">
+                <div class="label-with-info">
+                    <span class="setting-label">Speed Colors</span>
+                    <button id="info-btn" class="info-btn" aria-label="Gradient Info">ⓘ</button>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="gradient-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div id="gradient-info-panel" class="gradient-info-panel" style="display: none;">
+                <div><span style="color: #60a5fa;">■</span> &lt; 10 km/h (Calm)</div>
+                <div><span style="color: #34d399;">■</span> 10–20 km/h (Moderate)</div>
+                <div><span style="color: #fbbf24;">■</span> 20–35 km/h (Brisk)</div>
+                <div><span style="color: #f97316;">■</span> 35–50 km/h (Strong)</div>
+                <div><span style="color: #ef4444;">■</span> 50+ km/h (Gale)</div>
+            </div>
+            
+            <div class="setting-item coordinate-settings">
+                <label class="setting-label">Location Source</label>
+                <div class="toggle-group">
+                    <label class="toggle-option">
+                        <input type="radio" name="loc-source" value="gps" checked>
+                        <span>GPS Live</span>
+                    </label>
+                    <label class="toggle-option">
+                        <input type="radio" name="loc-source" value="custom">
+                        <span>Custom Loc</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="custom-coords-inputs" class="custom-inputs-container" style="display: none;">
+                <div class="input-grid">
+                    <div class="input-field-wrapper">
+                        <label for="input-lat">Latitude</label>
+                        <input type="number" id="input-lat" step="any">
+                    </div>
+                    <div class="input-field-wrapper">
+                        <label for="input-lon">Longitude</label>
+                        <input type="number" id="input-lon" step="any">
+                    </div>
+                </div>
+                <button id="apply-coords-btn" class="primary-action-btn">Apply Coordinates</button>
+                <button id="save-preset-btn" class="primary-action-btn secondary-btn" style="margin-top: 8px;">Save Preset</button>
+                
+                <div class="presets-wrapper">
+                    <label class="setting-label">Saved Presets</label>
+                    <div id="presets-list" class="presets-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="setting-item" id="app-version-box" style="cursor: pointer;">
+            <label style="cursor: pointer;">App Version</label>
+            <a href="https://arnavg-blg.vercel.app/kitely" target="_blank" id="version-link" style="color: #62626a; text-decoration: none; font-weight: 500;">v3.1.0</a>
+        </div>
+    </div>
+</div>
+
+<script src="capacitor.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

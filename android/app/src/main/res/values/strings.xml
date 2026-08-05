@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Kitely</string>
+    <string name="title_activity_main">Kitely</string>
+    <string name="package_name">com.arnavgadgil.kitely</string>
+    <string name="custom_url_scheme">com.arnavgadgil.kitely</string>
+</resources>

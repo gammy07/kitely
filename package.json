@@ -1,0 +1,31 @@
+{
+  "name": "kitely",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gammy07/kitely.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gammy07/kitely/issues"
+  },
+  "homepage": "https://github.com/gammy07/kitely#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/geolocation": "^8.2.0",
+    "@capacitor/motion": "^8.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
