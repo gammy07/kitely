@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="12dp"
+    android:background="#1E1E1E">
+
+    <ImageView
+        android:id="@+id/wind_arrow"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/kitely_arrow"
+        android:contentDescription="Wind direction arrow"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/wind_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-- km/h"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/wind_direction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:textColor="#A0A0A0"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/wind_gusts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gusts: --"
+        android:textColor="#A0A0A0"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"/>
+
+</LinearLayout>

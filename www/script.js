@@ -15,6 +15,9 @@ const gustsDiv = document.getElementById("gusts");
 const toggleCompass = document.getElementById("togglecompass");
 const arrowPath = document.querySelector('.arrow svg path');
 
+
+
+
 let compassmode = 0;
 
 // local storage stuffz
@@ -36,6 +39,37 @@ let showUpdateTimes = localStorage.getItem("kitely-showUpdateTimes") !== null
 // audio and haptic feedback helper (this is probably messed up asf)
 
 let audioCtx = null;
+
+// Reusable function to push location to the Android Widget
+// Reusable function to push location to the Android Widget
+function pushLocationToWidget(lat, lon) {
+    try {
+        // Check if the Capacitor bridge is available
+        if (window.Capacitor && window.Capacitor.nativePromise) {
+            
+            // Bypass the missing JS Proxy and talk directly to the Android Bridge!
+            window.Capacitor.nativePromise("LocationStorage", "saveLocation", {
+                latitude: lat,
+                longitude: lon,
+                unit: currentUnit
+            })
+            .then(() => {
+                console.log("✅ WIDGET: Push successful!");
+            })
+            .catch((e) => {
+                console.error("❌ WIDGET: Push failed on native side", e);
+                // Print the actual error message, not the stringified object!
+                alert("Native plugin failed: " + (e.message || e));
+            });
+
+        } else {
+            console.warn("Capacitor native bridge is missing!");
+        }
+    } catch (error) {
+        console.error("WIDGET: Total JS Crash", error);
+        alert("Total JS Crash: " + error);
+    }
+}
 
 // 
 function playClickSound() {
@@ -269,23 +303,42 @@ async function initNativeLocation() {
         const { Geolocation } = Capacitor.Plugins;
 
         let permStatus = await Geolocation.checkPermissions();
-        if (permStatus.location === 'prompt' || permStatus.location === 'prompt-with-rationale') {
+
+        if (
+            permStatus.location === 'prompt' ||
+            permStatus.location === 'prompt-with-rationale'
+        ) {
             permStatus = await Geolocation.requestPermissions();
         }
 
         if (permStatus.location === 'granted') {
             const position = await Geolocation.getCurrentPosition();
+
             state.latitude = position.coords.latitude;
             state.longitude = position.coords.longitude;
 
-            if (locationText) locationText.textContent = `${state.latitude.toFixed(2)}, ${state.longitude.toFixed(2)}`;
+            if (locationText) {
+                locationText.textContent =
+                    `${state.latitude.toFixed(2)}, ${state.longitude.toFixed(2)}`;
+            }
+
+            // Weather is completely independent from the widget.
             getWeather();
+
+            pushLocationToWidget(state.latitude, state.longitude);
+
         } else {
-            if (statusText) statusText.textContent = "Location permission denied";
+            if (statusText) {
+                statusText.textContent = "Location permission denied";
+            }
         }
+
     } catch (error) {
         console.error("Native location failure:", error);
-        if (statusText) statusText.textContent = "Location access failed";
+
+        if (statusText) {
+            statusText.textContent = "Location access failed";
+        }
     }
 }
 
@@ -477,6 +530,10 @@ document.addEventListener("DOMContentLoaded", () => {
             currentUnit = event.target.value;
             localStorage.setItem("kitely-currentUnit", currentUnit);
             getWeather(); 
+
+            if (state.latitude !== null && state.longitude !== null) {
+                pushLocationToWidget(state.latitude, state.longitude);
+            }
         });
     }
 
@@ -526,6 +583,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             state.latitude = lat;
             state.longitude = lon;
+
+            pushLocationToWidget(state.latitude, state.longitude);
             
             if (locationText) locationText.textContent = `${state.latitude.toFixed(2)}, ${state.longitude.toFixed(2)}`;
             if (statusText) statusText.textContent = "Custom location set";
@@ -585,6 +644,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 state.latitude = preset.lat;
                 state.longitude = preset.lon;
+
+                pushLocationToWidget(state.latitude, state.longitude);
+
                 if (locationText) locationText.textContent = `${state.latitude.toFixed(2)}, ${state.longitude.toFixed(2)}`;
                 if (statusText) statusText.textContent = `Loaded preset: ${preset.name}`;
                 getWeather();
