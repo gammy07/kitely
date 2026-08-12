@@ -110,7 +110,7 @@ public class KitelyWidget extends AppWidgetProvider {
                 views.setTextViewText(R.id.wind_direction, getDirectionText(direction));
                 views.setTextViewText(R.id.wind_gusts, "Gusts: " + Math.round(gusts * 10.0) / 10.0 + unitLabel);
 
-                views.setFloat(R.id.wind_arrow, "setRotation", (float) direction);
+                views.setFloat(R.id.wind_arrow, "setRotation", (float) direction + 180);
 
                 Intent intent = new Intent(context, MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(

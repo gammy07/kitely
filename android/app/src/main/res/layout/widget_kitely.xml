@@ -8,6 +8,14 @@
     android:padding="12dp"
     android:background="#1E1E1E">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="N"
+        android:textColor="#A0A0A0"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="-4dp" />
     <ImageView
         android:id="@+id/wind_arrow"
         android:layout_width="56dp"
