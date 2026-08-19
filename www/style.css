@@ -601,3 +601,21 @@ input:checked + .slider:before {
     .arrow { width: 130px; height: 130px; }
     .container { gap: 8px; }
 }
+
+.weather-alert {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #ef4444;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 4px 0px 12px 0px;
+    backdrop-filter: blur(10px);
+}
+

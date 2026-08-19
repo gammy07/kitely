@@ -21,6 +21,9 @@
         <p id="status">Finding wind...</p>
         <div id="next-update" class="next-update">Next update in --m --s</div>
     </div>
+    <div id="weather-alert" class="weather-alert" style="display: none;">
+        <span id="weather-alert-text">No alerts</span>
+    </div>
 
     <div class="compass">
         <button id="togglecompass" class="off">
@@ -51,7 +54,6 @@
             <div id="location">Loading...</div>
         </div>
     </div>
-
     <div class="forecast-section">
         <h4>Forecast</h4>
         <div id="forecast-container" class="forecast-scroll-row">
@@ -93,7 +95,13 @@
                     <span class="slider round"></span>
                 </label>
             </div>
-
+            <div class="setting-item">
+                <span class="setting-label">Weather Alerts</span>
+                <label class="switch">
+                    <input type="checkbox" id="alerts-toggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
             <div class="setting-item">
                 <div class="label-with-info">
                     <span class="setting-label">Speed Colors</span>
@@ -108,9 +116,9 @@
             <div id="gradient-info-panel" class="gradient-info-panel" style="display: none;">
                 <div><span style="color: #60a5fa;">■</span> &lt; 10 km/h (Calm)</div>
                 <div><span style="color: #34d399;">■</span> 10–20 km/h (Moderate)</div>
-                <div><span style="color: #fbbf24;">■</span> 20–35 km/h (Brisk)</div>
-                <div><span style="color: #f97316;">■</span> 35–50 km/h (Strong)</div>
-                <div><span style="color: #ef4444;">■</span> 50+ km/h (Gale)</div>
+                <div><span style="color: #fb9a24;">■</span> 20–35 km/h (Brisk)</div>
+                <div><span style="color: #ea07cc;">■</span> 35–50 km/h (Strong)</div>
+                <div><span style="color: #ad14ff;">■</span> 50+ km/h (Gale)</div>
             </div>
             
             <div class="setting-item coordinate-settings">
@@ -150,7 +158,7 @@
 
         <div class="setting-item" id="app-version-box" style="cursor: pointer;">
             <label style="cursor: pointer;">App Version</label>
-            <a href="https://arnavg-blg.vercel.app/kitely" target="_blank" id="version-link" style="color: #62626a; text-decoration: none; font-weight: 500;">v3.1.0</a>
+            <a href="https://arnavg-blg.vercel.app/kitely" target="_blank" id="version-link" style="color: #62626a; text-decoration: none; font-weight: 500;">v3.3.0</a>
         </div>
     </div>
 </div>
